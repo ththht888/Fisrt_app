@@ -9,3 +9,14 @@
     border-radius: 10px;
     border: 1px solid black;
 }
+
+.blockBtn {
+    background-color: rgb(230, 97, 159);
+    padding: 17px 74px 18px 72px;
+    margin: 20px;
+}
+
+.Number {
+    background-color: cornflowerblue;
+    width: 35px;
+}

@@ -1,21 +1,13 @@
-const div = document.getElementById('cart');
-console.log(div)
-console.log(div.innerText)
+const div = document.getElementById("cart");
+const btn = document.getElementById("btn-change-text");
+const parentDiv = document.getElementById("main");
 
-
-
-
-const btn = document.getElementById('btn-cnahge-text');
-const parentDiv = document.getElementById('main');
+let num = 0;
 
 btn.addEventListener('click', (event) => {
-    const text = `***${div.innerText}***`;
-    div.innerHTML =text;
+  const newDiv = document.createElement("div");
+  num = num + 1;
+  newDiv.textContent = `№${num}`;
 
-    const newDiv = document.createElement('div');
-    newDiv.innerHTML = 'новый див';
-    const blockCount = newDiv.children.length + 1;
-    newDiv.textContent = `№${blockCount}`
-
-    parentDiv.appendChild(newDiv);
+  parentDiv.appendChild(newDiv);
 })
