@@ -1,0 +1,22 @@
+.new-div {
+    background-color: rgb(245, 181, 102);
+}
+
+.cart {
+    width: 300px;
+    height: 150px;
+    background-color: #eeacac;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.blockBtn {
+    background-color: rgb(230, 97, 159);
+    padding: 17px 74px 18px 72px;
+    margin: 20px;
+}
+
+.number {
+    background-color: cornflowerblue;
+    width: 35px;
+}
