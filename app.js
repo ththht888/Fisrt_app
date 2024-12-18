@@ -1,13 +1,15 @@
 const div = document.getElementById("cart");
 const btn = document.getElementById("btn-change-text");
 const parentDiv = document.getElementById("main");
+const input = document.getElementById("input-text");
 
-let num = 0;
+let textInput = "";
+let cardCount = 0;
 
-btn.addEventListener('click', (event) => {
-  const newDiv = document.createElement("div");
-  num = num + 1;
-  newDiv.textContent = `№${num}`;
+input.addEventListener("input", function (event) {
+  textInput = event.target.value;
+});
+
 
 btn.addEventListener("click", function () {
   cardCount++;
