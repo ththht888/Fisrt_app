@@ -3,64 +3,44 @@
 }
 
 .cart {
-  width: 270px;
-  height: 130px;
-  background-color: #eeacac;
-  border-radius: 10px;
-  border: 1px solid black;
-  display: flex;
-  flex-direction: column;
-  align-items: baseline;
-  padding: 10px;
-  margin: 5px;
-}
-
-.inputString {
-  width: 250px;
-  margin-left: 10px;
-}
-
-.blockBtn {
-  margin: 10px;
-}
-.text {
-  font-size: 15px;
-  margin: 15px 15px 20px 10px;
-}
-
-.card-green {
-  background-color: green;
-  width: 300px;
-  height: 150px;
-  margin: 5px;
-  border-radius: 10px;
-  border: 1px solid black;
-}
-
-.card-red {
-  background-color: red;
-  width: 300px;
-  height: 150px;
-  margin: 5px;
-  border-radius: 10px;
-  border: 1px solid black;
-}
-
-.card-yellow {
-  background-color: yellow;
-  width: 300px;
-  height: 150px;
-  margin: 5px;
-  border-radius: 10px;
-  border: 1px solid black;
-}
-
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.caca {
-  display: flex;
-  flex-wrap: wrap;
-}
+    width: 270px;
+    height: 130px;
+    background-color: #eeacac;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 5px;
+  }
+  
+  .blockBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    margin-top: 5px;
+  }
+  
+  .inputString {
+    width: 250px;
+  }
+  
+  .text {
+    font-size: 15px;
+  }
+  
+  .card {
+    background-color: rgb(162, 233, 191);
+    width: 300px;
+    height: 150px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 1px solid black;
+  }
+  
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .blockCartandCard {
+    display: flex;
+    flex-wrap: wrap;
+  }
