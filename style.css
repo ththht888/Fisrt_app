@@ -8,27 +8,22 @@
     background-color: #eeacac;
     border-radius: 10px;
     border: 1px solid black;
+    padding: 5px;
   }
   
   .blockBtn {
     display: flex;
     flex-direction: column;
     align-items: baseline;
-    padding: 10px;
-    margin: 5px;
+    margin-top: 5px;
   }
   
   .inputString {
     width: 250px;
-    margin-left: 10px;
   }
   
-  .blockBtn {
-    margin: 10px;
-  }
   .text {
     font-size: 15px;
-    margin: 15px 15px 20px 10px;
   }
   
   .card {
@@ -45,7 +40,7 @@
     flex-wrap: wrap;
   }
   
-  .caca {
+  .blockCartandCard {
     display: flex;
     flex-wrap: wrap;
   }
