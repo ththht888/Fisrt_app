@@ -6,10 +6,11 @@ const select = document.getElementById("select");
 
 let textInput = "";
 let cardCount = 0;
+btn.disabled = true;
 
 input.addEventListener("input", function (event) {
   textInput = event.target.value;
-  if (textInput.length == 0) {
+  if (textInput.length === 0) {
     btn.disabled = true;
   } else {
     btn.disabled = false;
@@ -22,9 +23,7 @@ btn.addEventListener("click", function () {
   const card = document.createElement("div");
   card.className = "card";
 
-  const cardText = textInput ? textInput : `card${cardCount}`;
-
-  card.textContent = cardText;
+  card.textContent = textInput;
 
   const selectedColor = select.value;
   if (selectedColor === "red") {
