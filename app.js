@@ -26,12 +26,16 @@ btn.addEventListener("click", function () {
   card.textContent = textInput;
 
   const selectedColor = select.value;
-  if (selectedColor === "red") {
-    card.className = "card-red";
-  } else if (selectedColor === "yellow") {
-    card.className = "card-yellow";
-  } else if (selectedColor === "green") {
-    card.className = "card-green";
+  switch (selectedColor) {
+    case "red":
+      card.className = "card-red";
+      break;
+    case "yellow":
+      card.className = "card-yellow";
+      break;
+    case "green":
+      card.className = "card-green";
+      break;
   }
   parentDiv.appendChild(card);
 });
