@@ -5,25 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="./style.css" />
+    <link
+      rel="icon"
+      href="./static/icons/header_icon.svg"
+      type="image/x-icon"
+    />
+    <title>Employees</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div id="cartAndCard" class="blockCartandCard">
-      <div id="cart" class="cart">
-        <h3 class="text">Добавить новый блок</h3>
-        <input
-          placeholder="Введите название карточки"
-          id="input-text"
-          class="inputString"
-        />
-        <select id="select">
-          <option value="" disabled selected hidden>Выберите цвет</option>
-          <option value="red">Красный</option>
-          <option value="yellow">Желтый</option>
-          <option value="green">Зеленый</option>
-        </select>
-        <button id="btn-change-text" class="blockBtn">Добавить карточку</button>
+    <div id="mainBlock" class="blockMain">
+      <h3 class="mainText">Список сотрудников</h3>
+      <div id="transparency" class="blockTransparent">
+        <div id="cartAndCard" class="blockCartandCard">
+          <div id="cart" class="cart">
+            <h3 class="text">Добавить новый блок</h3>
+            <input
+              placeholder="Введите название карточки"
+              id="input-text"
+              class="inputString"
+            />
+            <select id="select">
+              <option value="" disabled selected hidden>Выберите цвет</option>
+              <option value="red">Красный</option>
+              <option value="yellow">Желтый</option>
+              <option value="green">Зеленый</option>
+            </select>
+            <button id="btn-change-text" class="blockBtn">
+              Добавить карточку
+            </button>
+          </div>
+          <div id="main" class="cards"></div>
+        </div>
       </div>
-      <div id="main" class="cards"></div>
     </div>
     <script src="app.js"></script>
   </body>
