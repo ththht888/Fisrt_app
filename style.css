@@ -9,7 +9,7 @@ body{
 
 .blockMain {
   background-image: url(./static/pictures/website\ background.jpg);
-  height: 1000px;
+  height: 100vh;
   object-fit: cover;
   background-size: cover;
   display: flex;
