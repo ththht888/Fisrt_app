@@ -8,7 +8,7 @@ body{
 }
 
 .blockMain {
-  background-image: url(./pictures/website\ background.jpg);
+  background-image: url(./static/pictures/website\ background.jpg);
   height: 1000px;
   object-fit: cover;
   background-size: cover;
