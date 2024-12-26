@@ -23,21 +23,16 @@
       <div id="transparency" class="blockTransparent">
         <div id="cartAndCard" class="blockCartandCard">
           <div id="cart" class="cart">
-            <h3 class="text">Добавить новый блок</h3>
-            <input
-              placeholder="Введите название карточки"
-              id="input-text"
-              class="inputString"
-            />
-            <select id="select">
-              <option value="" disabled selected hidden>Выберите цвет</option>
-              <option value="red">Красный</option>
-              <option value="yellow">Желтый</option>
-              <option value="green">Зеленый</option>
+            <input placeholder="Имя" id="input-text" class="inputString" />
+            <input placeholder="Телефон" id="input-number" class="inputString" type='number'/>
+            <select id="select" class="blockSelect">
+              <option value="" disabled selected hidden>Должность</option>
+              <option value="red">Администратор</option>
+              <option value="green">Разработчик</option>
+              <option value="green">Тестировщик</option>
+              <option value="yellow">Девопс</option>
             </select>
-            <button id="btn-change-text" class="blockBtn">
-              Добавить карточку
-            </button>
+            <button id="btn-change-text" class="blockBtn">Добавить</button>
           </div>
           <div id="main" class="cards"></div>
         </div>
