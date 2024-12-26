@@ -1,4 +1,4 @@
-body{
+body {
   margin: 0;
 }
 * {
@@ -17,41 +17,54 @@ body{
   align-items: center;
 }
 
-.mainText{
+.mainText {
   font-style: italic;
   text-decoration: underline;
   font-size: 24px;
   margin: 15px 0 15px 0;
-  
 }
 .blockTransparent {
-  background-color: #ffffff7d;;
+  background-color: #ffffff7d;
   width: 80%;
   height: 800px;
   border-radius: 20px;
   display: flex;
   justify-content: center;
   padding: 15px;
+  overflow: auto;
 }
+
+.blockTransparent::-webkit-scrollbar {
+  width: 5px;
+}
+
+.blockTransparent::-webkit-scrollbar-thumb {
+  background-color: #507e50;
+  border-radius: 5px;
+}
+
 .cart {
-  width: 270px;
-  height: 130px;
+  width: 330px;
+  height: 150px;
   background-color: #91ad91;
   border-radius: 10px;
-  border: 1px solid black;
   padding: 5px;
-  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  min-height: 150px;
 }
 
 .blockBtn {
   display: flex;
   flex-direction: column;
   align-items: baseline;
-  margin-top: 5px;
+  width: 200px;
 }
 
 .inputString {
-  width: 250px;
+  width: 310px;
 }
 
 .text {
@@ -64,40 +77,56 @@ body{
   height: 150px;
   margin: 5px;
   border-radius: 10px;
-  border: 1px solid black;
 }
 
 .cards {
   display: flex;
   flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .blockCartandCard {
   display: flex;
-  flex-wrap: wrap;
+  gap: 5px;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card-green {
-  background-color: green;
-  width: 300px;
+  width: 330px;
   height: 150px;
-  margin: 5px;
+  background-color: #68db68;
   border-radius: 10px;
-  border: 1px solid black;
+  padding: 5px;
+  margin: 0;
 }
 .card-red {
-  background-color: red;
-  width: 300px;
+  width: 330px;
   height: 150px;
-  margin: 5px;
+  background-color: #e95151;
   border-radius: 10px;
-  border: 1px solid black;
+  padding: 5px;
+  margin: 0;
 }
 .card-yellow {
-  background-color: yellow;
-  width: 300px;
+  width: 330px;
   height: 150px;
-  margin: 5px;
+  background-color: #d2ec3f;
   border-radius: 10px;
-  border: 1px solid black;
+  padding: 5px;
+  margin: 0;
+}
+
+.blockSelect {
+  width: 200px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
