@@ -11,10 +11,10 @@ let cardCount = 0;
 btn.disabled = true;
 
 function buttonState() {
-  const TextInputValid = textInput.trim().length > 0;
-  const NumInputValid = numInput.length === 11;
-  const SelectValid = select.value !== "";
-  btn.disabled = !(TextInputValid && NumInputValid && SelectValid);
+  const isTextInputValid = textInput.trim().length > 0;
+  const isNumInputValid = numInput.length === 11;
+  const isSelectValid = select.value !== "";
+  btn.disabled = !(isTextInputValid && isNumInputValid && isSelectValid);
 }
 
 input.addEventListener("input", function (event) {
@@ -23,9 +23,12 @@ input.addEventListener("input", function (event) {
 });
 
 inputNum.addEventListener("keydown", function (event) {
-  if (event.key < "0" || (event.key > "9" && event.key !== "Backspace")) {
-    event.preventDefault();
-  }
+  const listParams = ["e", "-", "+", ".", ",", "ArrowUp", "ArrowDown"];
+  listParams.forEach((item) => {
+    if (item === event.key) {
+      event.preventDefault();
+    }
+  });
 });
 
 inputNum.addEventListener("input", function (event) {
