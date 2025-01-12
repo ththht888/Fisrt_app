@@ -10,11 +10,49 @@ let numInput = "";
 let cardCount = 0;
 btn.disabled = true;
 
+let dataCards = JSON.parse(localStorage.getItem("cards")) || [];
+console.log(dataCards);
+
 function buttonState() {
   const isTextInputValid = textInput.trim().length > 0;
   const isNumInputValid = numInput.length === 11;
   const isSelectValid = select.value !== "";
   btn.disabled = !(isTextInputValid && isNumInputValid && isSelectValid);
+}
+
+function createAndAppendCard(cardData, parent) {
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const nameDisplay = document.createElement("p");
+  nameDisplay.textContent = `Имя: ${cardData.name}`;
+  card.appendChild(nameDisplay);
+
+  const numberDisplay = document.createElement("p");
+  numberDisplay.textContent = `Телефон: ${cardData.phone}`;
+  card.appendChild(numberDisplay);
+
+  const jobDisplay = document.createElement("p");
+  jobDisplay.textContent = `Должность: ${cardData.worker}`;
+  card.appendChild(jobDisplay);
+
+  const timeDisplay = document.createElement("p");
+  timeDisplay.textContent = `${cardData.date}`;
+  card.appendChild(timeDisplay);
+
+  switch (cardData.jobValue) {
+    case "red":
+      card.classList.add("card-red");
+      break;
+    case "yellow":
+      card.classList.add("card-yellow");
+      break;
+    case "green":
+      card.classList.add("card-green");
+      break;
+  }
+
+  parent.appendChild(card);
 }
 
 input.addEventListener("input", function (event) {
@@ -43,22 +81,6 @@ select.addEventListener("change", function () {
 btn.addEventListener("click", function () {
   cardCount++;
 
-  const card = document.createElement("div");
-  card.className = "card";
-
-  const nameDisplay = document.createElement("p");
-  nameDisplay.textContent = `Имя: ${textInput}`;
-  card.appendChild(nameDisplay);
-
-  const numberDisplay = document.createElement("p");
-  numberDisplay.textContent = `Телефон: ${numInput}`;
-  card.appendChild(numberDisplay);
-
-  const selectedOption = select.options[select.selectedIndex];
-  const jobDisplay = document.createElement("p");
-  jobDisplay.textContent = `Должность: ${selectedOption.text}`;
-  card.appendChild(jobDisplay);
-
   const data = new Date().toLocaleString("ru-RU", {
     year: "numeric",
     month: "2-digit",
@@ -68,21 +90,30 @@ btn.addEventListener("click", function () {
     second: "2-digit",
   });
 
-  const timeDisplay = document.createElement("p");
-  timeDisplay.textContent = `${data}`;
-  card.appendChild(timeDisplay);
+  const selectedOption = select.options[select.selectedIndex];
 
-  const selectedValue = select.value;
-  switch (selectedValue) {
-    case "red":
-      card.classList.add("card-red");
-      break;
-    case "yellow":
-      card.classList.add("card-yellow");
-      break;
-    case "green":
-      card.classList.add("card-green");
-      break;
-  }
-  parentDiv.appendChild(card);
+  const objCard = {
+    name: textInput,
+    phone: numInput,
+    worker: selectedOption.text,
+    date: data,
+    jobValue: select.value,
+  };
+
+  dataCards.push(objCard);
+
+  localStorage.setItem("cards", JSON.stringify(dataCards));
+
+  createAndAppendCard(objCard, parentDiv);
+
+  input.value = "";
+  textInput = "";
+  inputNum.value = "";
+  numInput = "";
+  select.value = "";
+  btn.disabled = true;
+});
+
+dataCards.forEach((cardData) => {
+  createAndAppendCard(cardData, parentDiv);
 });
