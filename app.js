@@ -11,7 +11,6 @@ let cardCount = 0;
 btn.disabled = true;
 
 let dataCards = JSON.parse(localStorage.getItem("cards")) || [];
-console.log(dataCards);
 
 function buttonState() {
   const isTextInputValid = textInput.trim().length > 0;
