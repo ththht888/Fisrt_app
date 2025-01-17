@@ -81,7 +81,7 @@ select.addEventListener("change", function () {
 btn.addEventListener("click", function () {
   cardCount++;
 
-  const data = new Date().toLocaleString("ru-RU", {
+  const originalDate = new Date().toLocaleString("ru-RU", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -89,6 +89,11 @@ btn.addEventListener("click", function () {
     minute: "2-digit",
     second: "2-digit",
   });
+
+  const [datePart, timePart] = originalDate.split(", ");
+  const [day, month, year] = datePart.split(".");
+
+  const data = `${year}-${month}-${day} ${timePart}`;
 
   const selectedOption = select.options[select.selectedIndex];
 
@@ -101,9 +106,7 @@ btn.addEventListener("click", function () {
   };
 
   dataCards.push(objCard);
-
   localStorage.setItem("cards", JSON.stringify(dataCards));
-
   createAndAppendCard(objCard, parentDiv);
 
   input.value = "";
