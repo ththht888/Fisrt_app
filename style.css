@@ -31,14 +31,13 @@ body {
   display: flex;
   justify-content: center;
   padding: 15px;
-  overflow: auto;
 }
 
-.blockTransparent::-webkit-scrollbar {
+.cards::-webkit-scrollbar {
   width: 5px;
 }
 
-.blockTransparent::-webkit-scrollbar-thumb {
+.cards::-webkit-scrollbar-thumb {
   background-color: #507e50;
   border-radius: 5px;
 }
@@ -87,6 +86,7 @@ body {
   justify-content: center;
   padding-top: 15px;
   padding-bottom: 15px;
+  overflow: auto;
 }
 
 .blockCartandCard {
