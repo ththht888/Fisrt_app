@@ -19,7 +19,7 @@ function buttonState() {
   btn.disabled = !(isTextInputValid && isNumInputValid && isSelectValid);
 }
 
-function createAndAppendCard(cardData, parent) {
+function createAndAppendCard(cardData, parent, index) {
   const card = document.createElement("div");
   card.className = "card";
 
@@ -39,6 +39,11 @@ function createAndAppendCard(cardData, parent) {
   timeDisplay.textContent = `${cardData.date}`;
   card.appendChild(timeDisplay);
 
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "Удалить";
+  deleteButton.addEventListener("click", () => deleteCard(index));
+  card.appendChild(deleteButton);
+
   switch (cardData.jobValue) {
     case "red":
       card.classList.add("card-red");
@@ -52,6 +57,19 @@ function createAndAppendCard(cardData, parent) {
   }
 
   parent.appendChild(card);
+}
+
+function deleteCard(index) {
+  dataCards.splice(index, 1);
+  localStorage.setItem("cards", JSON.stringify(dataCards));
+  renderCards();
+}
+
+function renderCards() {
+  parentDiv.innerHTML = "";
+  dataCards.forEach((cardData, index) => {
+    createAndAppendCard(cardData, parentDiv, index);
+  });
 }
 
 input.addEventListener("input", function (event) {
@@ -92,7 +110,7 @@ btn.addEventListener("click", function () {
   const [datePart, timePart] = originalDate.split(", ");
   const [day, month, year] = datePart.split(".");
 
-  const data = `${year}-${month}-${day} ${timePart}`;
+  const data = `${year}.${month}.${day} ${timePart}`;
 
   const selectedOption = select.options[select.selectedIndex];
 
@@ -106,7 +124,7 @@ btn.addEventListener("click", function () {
 
   dataCards.push(objCard);
   localStorage.setItem("cards", JSON.stringify(dataCards));
-  createAndAppendCard(objCard, parentDiv);
+  renderCards();
 
   input.value = "";
   textInput = "";
@@ -116,6 +134,4 @@ btn.addEventListener("click", function () {
   btn.disabled = true;
 });
 
-dataCards.forEach((cardData) => {
-  createAndAppendCard(cardData, parentDiv);
-});
+renderCards();
