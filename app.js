@@ -110,7 +110,7 @@ btn.addEventListener("click", function () {
   const [datePart, timePart] = originalDate.split(", ");
   const [day, month, year] = datePart.split(".");
 
-  const data = `${year}.${month}.${day} ${timePart}`;
+  const data = `${year}-${month}-${day} ${timePart}`;
 
   const selectedOption = select.options[select.selectedIndex];
 
