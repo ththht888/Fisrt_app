@@ -103,6 +103,7 @@ body {
   border-radius: 10px;
   padding: 5px;
   margin: 0;
+  position: relative;
 }
 .card-red {
   width: 330px;
@@ -111,6 +112,7 @@ body {
   border-radius: 10px;
   padding: 5px;
   margin: 0;
+  position: relative;
 }
 .card-yellow {
   width: 330px;
@@ -119,10 +121,41 @@ body {
   border-radius: 10px;
   padding: 5px;
   margin: 0;
+  position: relative;
 }
 
 .blockSelect {
   width: 200px;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: absolute; 
+  bottom: 5px;
+  right: 5px
+}
+
+.delete-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.change-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: absolute; 
+  top: 5px;
+  right: 5px
+}
+
+.change-icon {
+  width: 30px;
+  height: 30px;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
