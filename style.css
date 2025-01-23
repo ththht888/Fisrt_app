@@ -133,9 +133,9 @@ body {
   border: none;
   cursor: pointer;
   padding: 0;
-  position: absolute; 
+  position: absolute;
   bottom: 5px;
-  right: 5px
+  right: 5px;
 }
 
 .delete-icon {
@@ -144,18 +144,53 @@ body {
 }
 
 .change-button {
-  background: none;
   border: none;
   cursor: pointer;
   padding: 0;
-  position: absolute; 
+  position: absolute;
   top: 5px;
-  right: 5px
+  right: 5px;
+  background-image: url(./static/icons/changeBtn.svg);
+  width: 30px;
+  height: 30px;
+  background-size: cover;
 }
 
 .change-icon {
   width: 30px;
   height: 30px;
+}
+
+.ok-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+}
+.ok-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.cancel-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+.cancel-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.card > div {
+  margin-bottom: 15px;
 }
 
 input[type="number"]::-webkit-inner-spin-button,

@@ -50,12 +50,8 @@ function createAndAppendCard(cardData, parent, index) {
   deleteButton.addEventListener("click", () => deleteCard(index));
   card.appendChild(deleteButton);
 
-  const changeButton = document.createElement("button");
+  const changeButton = document.createElement("div");
   changeButton.classList.add("change-button");
-  const changeIcon = document.createElement("img");
-  changeIcon.src = "./static/icons/changeBtn.svg";
-  changeIcon.classList.add("change-icon");
-  changeButton.appendChild(changeIcon);
   changeButton.addEventListener("click", (event) => openForm(event, index));
   card.appendChild(changeButton);
 
@@ -77,23 +73,55 @@ function createAndAppendCard(cardData, parent, index) {
 function openForm(ev, index) {
   const currentCard = ev.target.parentNode;
   const currentDataCard = dataCards[index];
-  currentCard.innerHTML = ""; 
+  currentCard.innerHTML = "";
 
+  const nameLabel = document.createElement("label");
+  nameLabel.textContent = "Имя: ";
   const changeInputName = document.createElement("input");
-  changeInputName.placeholder = "Имя";
+  changeInputName.type = "text";
   changeInputName.value = currentDataCard.name;
 
+  const nameContainer = document.createElement("div");
+  nameContainer.appendChild(nameLabel);
+  nameContainer.appendChild(changeInputName);
+
+  const phoneLabel = document.createElement("label");
+  phoneLabel.textContent = "Телефон: ";
   const changeInputNumber = document.createElement("input");
+  changeInputNumber.type = "number";
   changeInputNumber.placeholder = "Телефон";
   changeInputNumber.value = currentDataCard.phone;
 
-  const changeSelectJob = document.createElement("select");
-  const options = Array.from(select.options).map((option) => {
-    const newOption = document.createElement("option");
-    newOption.value = option.value;
-    newOption.text = option.text;
-    return newOption;
+  changeInputNumber.addEventListener("keydown", function (event) {
+    const listParams = ["e", "-", "+", ".", ",", "ArrowUp", "ArrowDown"];
+    listParams.forEach((item) => {
+      if (item === event.key) {
+        event.preventDefault();
+      }
+    });
   });
+
+  changeInputNumber.addEventListener("input", function (event) {
+    if (event.target.value.length > 11) {
+      event.target.value = event.target.value.slice(0, 11);
+    }
+  });
+
+  const phoneContainer = document.createElement("div");
+  phoneContainer.appendChild(phoneLabel);
+  phoneContainer.appendChild(changeInputNumber);
+
+  const jobLabel = document.createElement("label");
+  jobLabel.textContent = "Должность: ";
+  const changeSelectJob = document.createElement("select");
+  const options = Array.from(select.options)
+    .filter((option) => option.value !== "")
+    .map((option) => {
+      const newOption = document.createElement("option");
+      newOption.value = option.value;
+      newOption.text = option.text;
+      return newOption;
+    });
   options.forEach((option) => changeSelectJob.appendChild(option));
   changeSelectJob.value = currentDataCard.jobValue;
 
@@ -113,27 +141,63 @@ function openForm(ev, index) {
     changeJob = event.target.value;
   });
 
+  const jobContainer = document.createElement("div");
+  jobContainer.appendChild(jobLabel);
+  jobContainer.appendChild(changeSelectJob);
 
   const okButton = document.createElement("button");
-  okButton.textContent = "OK";
+  okButton.classList.add("ok-button");
+  const okIcon = document.createElement("img");
+  okIcon.src = "./static/icons/ok.svg";
+  okIcon.classList.add("ok-icon");
+  okButton.appendChild(okIcon);
   okButton.addEventListener("click", () => {
     saveEditedData(currentCard, index, changeName, changeNumber, changeJob);
   });
 
-  currentCard.appendChild(changeInputName);
-  currentCard.appendChild(changeInputNumber);
-  currentCard.appendChild(changeSelectJob);
+  const cancelButton = document.createElement("button");
+  cancelButton.classList.add("cancel-button");
+  const cancelIcon = document.createElement("img");
+  cancelIcon.src = "./static/icons/cancel.svg";
+  cancelIcon.classList.add("cancel-icon");
+  cancelButton.appendChild(cancelIcon);
+  cancelButton.addEventListener("click", () => {
+    renderCards();
+  });
+
+  currentCard.appendChild(nameContainer);
+  currentCard.appendChild(phoneContainer);
+  currentCard.appendChild(jobContainer);
   currentCard.appendChild(okButton);
+  currentCard.appendChild(cancelButton);
 }
 
 function saveEditedData(card, index, name, phone, job) {
+  const selectedOption = Array.from(select.options).find(
+    (option) => option.value === job
+  );
+
+  const originalDate = new Date().toLocaleString("ru-RU", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  const [datePart, timePart] = originalDate.split(", ");
+  const [day, month, year] = datePart.split(".");
+
+  const formattedDate = `${year}-${month}-${day} ${timePart}`;
 
   dataCards[index] = {
     ...dataCards[index],
     name,
     phone,
-    worker: select.options[select.selectedIndex].text,
+    worker: selectedOption.text,
     jobValue: job,
+    date: formattedDate,
   };
 
   localStorage.setItem("cards", JSON.stringify(dataCards));
