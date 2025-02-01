@@ -7,19 +7,19 @@ const inputNum = document.getElementById("input-number");
 
 let textInput = "";
 let numInput = "";
-// let cardCount = 0;
+
 let id = 0;
-// btn.disabled = true;
+btn.disabled = true;
 
 // let dataCards = JSON.parse(localStorage.getItem("cards")) || [];
 let dataCards = [];
 getData();
 
 function buttonState() {
-  // const isTextInputValid = textInput.trim().length > 0;
-  // const isNumInputValid = numInput.length === 11;
-  // const isSelectValid = select.value !== "";
-  btn.disabled = !(textInput && numInput && select.value);
+  const isTextInputValid = textInput.trim().length > 0;
+  const isNumInputValid = numInput.length === 11;
+  const isSelectValid = select.value !== "";
+  btn.disabled = !(isTextInputValid && isNumInputValid && isSelectValid);
 }
 
 function createAndAppendCard(cardData, parent, index) {
@@ -211,50 +211,13 @@ function saveEditedData(card, index, name, phone, job) {
     },
     body: JSON.stringify(updatedCard),
   })
-    .then((response) => {
-      console.log(response);
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data);
-      getData();
-    })
+    .then(() => getData())
+  
     .catch((e) => console.error(e));
 }
 
-// dataCards[index] = {
-//   ...dataCards[index],
-//   name,
-//   phone,
-//   worker: selectedOption.text,
-//   jobValue: job,
-//   date: formattedDate,
-// };
-
 // localStorage.setItem("cards", JSON.stringify(dataCards));
 
-// switch (job) {
-//   case "Администратор":
-//     card.className = "card card-red";
-//     break;
-//   case "Девопс":
-//     card.className = "card card-yellow";
-//     break;
-//   case "Разработчик":
-//     card.className = "card card-green";
-//     break;
-//   case "Тестировщик":
-//     card.className = "card card-green";
-//     break;
-// }
-
-// renderCards();
-
-// function deleteCard(index) {
-// dataCards.splice(index, 1);
-// localStorage.setItem("cards", JSON.stringify(dataCards));
-// renderCards();
-// }
 function deleteCard(index) {
   const cardId = dataCards[index].id;
   const url = `http://localhost:8080/task/${cardId}`;
@@ -282,28 +245,20 @@ function getData() {
     .then((res) => res.json())
     .then((res) => {
       dataCards = res;
-      console.log(dataCards);
       renderCards();
     })
     .catch((e) => console.log(e, "catch"));
 }
 
 function createCard(card) {
-  fetch("http://localhost:8080/task/", {
+  fetch("http://localhost:8080/task", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(card),
   })
-    .then((response) => {
-      console.log(response);
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data);
-      getData();
-    })
+    .then(() => getData())
     .catch((e) => console.error(e));
 }
 
@@ -337,22 +292,7 @@ select.addEventListener("change", function () {
 });
 
 btn.addEventListener("click", function () {
-  // cardCount++;
-
-  // const originalDate = new Date().toLocaleString("ru-RU", {
-  //   year: "numeric",
-  //   month: "2-digit",
-  //   day: "2-digit",
-  //   hour: "2-digit",
-  //   minute: "2-digit",
-  //   second: "2-digit",
-  // });
-
-  // const [datePart, timePart] = originalDate.split(", ");
-  // const [day, month, year] = datePart.split(".");
-
-  // const data = `${year}-${month}-${day} ${timePart}`;
-
+ 
   const selectedOption = select.options[select.selectedIndex];
 
   const objCard = {
@@ -361,10 +301,8 @@ btn.addEventListener("click", function () {
     jobPosition: selectedOption.text,
   };
 
-  // dataCards.push(objCard);
   // localStorage.setItem("cards", JSON.stringify(dataCards));
   createCard(objCard);
-  // renderCards();
 
   input.value = "";
   textInput = "";
@@ -374,4 +312,3 @@ btn.addEventListener("click", function () {
   btn.disabled = true;
 });
 
-getData();
