@@ -7,17 +7,19 @@ const inputNum = document.getElementById("input-number");
 
 let textInput = "";
 let numInput = "";
-let cardCount = 0;
+// let cardCount = 0;
 let id = 0;
-btn.disabled = true;
+// btn.disabled = true;
 
-let dataCards = JSON.parse(localStorage.getItem("cards")) || [];
+// let dataCards = JSON.parse(localStorage.getItem("cards")) || [];
+let dataCards = [];
+getData();
 
 function buttonState() {
-  const isTextInputValid = textInput.trim().length > 0;
-  const isNumInputValid = numInput.length === 11;
-  const isSelectValid = select.value !== "";
-  btn.disabled = !(isTextInputValid && isNumInputValid && isSelectValid);
+  // const isTextInputValid = textInput.trim().length > 0;
+  // const isNumInputValid = numInput.length === 11;
+  // const isSelectValid = select.value !== "";
+  btn.disabled = !(textInput && numInput && select.value);
 }
 
 function createAndAppendCard(cardData, parent, index) {
@@ -34,11 +36,11 @@ function createAndAppendCard(cardData, parent, index) {
   card.appendChild(numberDisplay);
 
   const jobDisplay = document.createElement("p");
-  jobDisplay.textContent = `Должность: ${cardData.worker}`;
+  jobDisplay.textContent = `Должность: ${cardData.jobPosition}`;
   card.appendChild(jobDisplay);
 
   const timeDisplay = document.createElement("p");
-  timeDisplay.textContent = `${cardData.date}`;
+  timeDisplay.textContent = `${cardData.createDate}`;
   card.appendChild(timeDisplay);
 
   const deleteButton = document.createElement("button");
@@ -55,14 +57,17 @@ function createAndAppendCard(cardData, parent, index) {
   changeButton.addEventListener("click", (event) => openForm(event, index));
   card.appendChild(changeButton);
 
-  switch (cardData.jobValue) {
-    case "red":
+  switch (cardData.jobPosition) {
+    case "Администратор":
       card.classList.add("card-red");
       break;
-    case "yellow":
+    case "Девопс":
       card.classList.add("card-yellow");
       break;
-    case "green":
+    case "Разработчик":
+      card.classList.add("card-green");
+      break;
+    case "Тестировщик":
       card.classList.add("card-green");
       break;
   }
@@ -191,36 +196,76 @@ function saveEditedData(card, index, name, phone, job) {
 
   const formattedDate = `${year}-${month}-${day} ${timePart}`;
 
-  dataCards[index] = {
-    ...dataCards[index],
-    name,
-    phone,
-    worker: selectedOption.text,
-    jobValue: job,
+  const updatedCard = {
+    id: dataCards[index].id,
+    name: name,
+    phone: phone,
+    jobPosition: selectedOption.text,
     date: formattedDate,
   };
-
-  localStorage.setItem("cards", JSON.stringify(dataCards));
-
-  switch (job) {
-    case "red":
-      card.className = "card card-red";
-      break;
-    case "yellow":
-      card.className = "card card-yellow";
-      break;
-    case "green":
-      card.className = "card card-green";
-      break;
-  }
-
-  renderCards();
+  const url = `http://localhost:8080/task/${updatedCard.id}`;
+  fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedCard),
+  })
+    .then((response) => {
+      console.log(response);
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      getData();
+    })
+    .catch((e) => console.error(e));
 }
 
+// dataCards[index] = {
+//   ...dataCards[index],
+//   name,
+//   phone,
+//   worker: selectedOption.text,
+//   jobValue: job,
+//   date: formattedDate,
+// };
+
+// localStorage.setItem("cards", JSON.stringify(dataCards));
+
+// switch (job) {
+//   case "Администратор":
+//     card.className = "card card-red";
+//     break;
+//   case "Девопс":
+//     card.className = "card card-yellow";
+//     break;
+//   case "Разработчик":
+//     card.className = "card card-green";
+//     break;
+//   case "Тестировщик":
+//     card.className = "card card-green";
+//     break;
+// }
+
+// renderCards();
+
+// function deleteCard(index) {
+// dataCards.splice(index, 1);
+// localStorage.setItem("cards", JSON.stringify(dataCards));
+// renderCards();
+// }
 function deleteCard(index) {
-  dataCards.splice(index, 1);
-  localStorage.setItem("cards", JSON.stringify(dataCards));
-  renderCards();
+  const cardId = dataCards[index].id;
+  const url = `http://localhost:8080/task/${cardId}`;
+  fetch(url, {
+    method: "DELETE",
+  })
+    .then((response) => {
+      console.log(response);
+      getData();
+    })
+    .catch((e) => console.error(e));
 }
 
 function renderCards() {
@@ -228,6 +273,38 @@ function renderCards() {
   dataCards.forEach((cardData, index) => {
     createAndAppendCard(cardData, parentDiv, index);
   });
+}
+
+function getData() {
+  fetch("http://localhost:8080/task/all", {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      dataCards = res;
+      console.log(dataCards);
+      renderCards();
+    })
+    .catch((e) => console.log(e, "catch"));
+}
+
+function createCard(card) {
+  fetch("http://localhost:8080/task/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(card),
+  })
+    .then((response) => {
+      console.log(response);
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      getData();
+    })
+    .catch((e) => console.error(e));
 }
 
 input.addEventListener("input", function (event) {
@@ -245,6 +322,12 @@ inputNum.addEventListener("keydown", function (event) {
 });
 
 inputNum.addEventListener("input", function (event) {
+  if (event.target.value.length > 11) {
+    event.target.value = event.target.value.slice(0, 11);
+  }
+});
+
+inputNum.addEventListener("input", function (event) {
   numInput = event.target.value;
   buttonState();
 });
@@ -254,35 +337,34 @@ select.addEventListener("change", function () {
 });
 
 btn.addEventListener("click", function () {
-  cardCount++;
+  // cardCount++;
 
-  const originalDate = new Date().toLocaleString("ru-RU", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  // const originalDate = new Date().toLocaleString("ru-RU", {
+  //   year: "numeric",
+  //   month: "2-digit",
+  //   day: "2-digit",
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  //   second: "2-digit",
+  // });
 
-  const [datePart, timePart] = originalDate.split(", ");
-  const [day, month, year] = datePart.split(".");
+  // const [datePart, timePart] = originalDate.split(", ");
+  // const [day, month, year] = datePart.split(".");
 
-  const data = `${year}-${month}-${day} ${timePart}`;
+  // const data = `${year}-${month}-${day} ${timePart}`;
 
   const selectedOption = select.options[select.selectedIndex];
 
   const objCard = {
     name: textInput,
     phone: numInput,
-    worker: selectedOption.text,
-    date: data,
-    jobValue: select.value,
+    jobPosition: selectedOption.text,
   };
 
-  dataCards.push(objCard);
-  localStorage.setItem("cards", JSON.stringify(dataCards));
-  renderCards();
+  // dataCards.push(objCard);
+  // localStorage.setItem("cards", JSON.stringify(dataCards));
+  createCard(objCard);
+  // renderCards();
 
   input.value = "";
   textInput = "";
@@ -292,4 +374,4 @@ btn.addEventListener("click", function () {
   btn.disabled = true;
 });
 
-renderCards();
+getData();
