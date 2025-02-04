@@ -96,7 +96,7 @@ body {
   align-items: center;
 }
 
-.card-green {
+.qa {
   width: 330px;
   height: 150px;
   background-color: #68db68;
@@ -105,7 +105,16 @@ body {
   margin: 0;
   position: relative;
 }
-.card-red {
+.developer {
+  width: 330px;
+  height: 150px;
+  background-color: #68db68;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 0;
+  position: relative;
+}
+.admin {
   width: 330px;
   height: 150px;
   background-color: #e95151;
@@ -114,7 +123,7 @@ body {
   margin: 0;
   position: relative;
 }
-.card-yellow {
+.devops {
   width: 330px;
   height: 150px;
   background-color: #d2ec3f;
@@ -192,6 +201,8 @@ body {
 .card > div {
   margin-bottom: 15px;
 }
+
+
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
