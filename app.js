@@ -79,6 +79,11 @@ function openForm(ev, index) {
   const currentCard = ev.target.parentNode;
   const currentDataCard = dataCards[index];
   currentCard.innerHTML = "";
+  currentCard.style.padding = '10px';
+  currentCard.style.boxSizing = 'border-box';
+
+  const editFormContainer = document.createElement("div");
+  editFormContainer.classList.add("edit-form-container");
 
   const nameLabel = document.createElement("label");
   nameLabel.textContent = "Имя: ";
@@ -170,11 +175,13 @@ function openForm(ev, index) {
     renderCards();
   });
 
-  currentCard.appendChild(nameContainer);
-  currentCard.appendChild(phoneContainer);
-  currentCard.appendChild(jobContainer);
-  currentCard.appendChild(okButton);
-  currentCard.appendChild(cancelButton);
+  editFormContainer.appendChild(nameContainer);
+  editFormContainer.appendChild(phoneContainer);
+  editFormContainer.appendChild(jobContainer);
+  editFormContainer.appendChild(okButton);
+  editFormContainer.appendChild(cancelButton);
+
+  currentCard.appendChild(editFormContainer);
 }
 
 function saveEditedData(card, index, name, phone, job) {
@@ -212,7 +219,7 @@ function saveEditedData(card, index, name, phone, job) {
     body: JSON.stringify(updatedCard),
   })
     .then(() => getData())
-  
+
     .catch((e) => console.error(e));
 }
 
@@ -248,6 +255,17 @@ function getData() {
       renderCards();
     })
     .catch((e) => console.log(e, "catch"));
+  // try {
+  //   const response = await fetch("http://localhost:8080/task/all", {
+  //     method: "GET",
+  //   });
+  //   if (response) {
+  //     const data = await response.json();
+  //     dataCards = data;
+  //   }
+  // } catch (e) {
+  //   console.log(e)
+  // }
 }
 
 function createCard(card) {
@@ -292,7 +310,6 @@ select.addEventListener("change", function () {
 });
 
 btn.addEventListener("click", function () {
- 
   const selectedOption = select.options[select.selectedIndex];
 
   const objCard = {
@@ -311,4 +328,3 @@ btn.addEventListener("click", function () {
   select.value = "";
   btn.disabled = true;
 });
-

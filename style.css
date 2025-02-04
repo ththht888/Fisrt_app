@@ -193,6 +193,26 @@ body {
   margin-bottom: 15px;
 }
 
+.edit-form-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.edit-form-container label {
+  text-align: left; 
+  margin: 0; 
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.edit-form-container input,
+.edit-form-container select {
+  margin: 0; 
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
