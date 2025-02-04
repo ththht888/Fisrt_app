@@ -263,16 +263,21 @@ async function getData() {
   }
 }
 
-function createCard(card) {
-  fetch("http://localhost:8080/task", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(card),
-  })
-    .then(() => getData())
-    .catch((e) => console.error(e));
+async function createCard(card) {
+  try {
+    const response = await fetch("http://localhost:8080/task", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(card),
+    });
+    if (response) {
+      getData();
+    }
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 input.addEventListener("input", function (event) {
