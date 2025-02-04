@@ -7,13 +7,65 @@ const inputNum = document.getElementById("input-number");
 
 let textInput = "";
 let numInput = "";
-
 let id = 0;
+let dataCards = [];
+
 btn.disabled = true;
 
 // let dataCards = JSON.parse(localStorage.getItem("cards")) || [];
-let dataCards = [];
 getData();
+
+input.addEventListener("input", function (event) {
+  textInput = event.target.value;
+  buttonState();
+});
+
+inputNum.addEventListener("keydown", function (event) {
+  const listParams = ["e", "-", "+", ".", ",", "ArrowUp", "ArrowDown"];
+  listParams.forEach((item) => {
+    if (item === event.key) {
+      event.preventDefault();
+    }
+  });
+});
+
+inputNum.addEventListener("input", function (event) {
+  if (event.target.value.length > 11) {
+    event.target.value = event.target.value.slice(0, 11);
+  }
+});
+
+inputNum.addEventListener("input", function (event) {
+  numInput = event.target.value;
+  buttonState();
+});
+
+select.addEventListener("change", function () {
+  buttonState();
+});
+
+btn.addEventListener("click", function () {
+  const selectedOption = select.options[select.selectedIndex];
+  console.log(selectedOption);
+  const objCard = {
+    name: textInput,
+    phone: numInput,
+    jobPosition: selectedOption.value,
+  };
+
+  // localStorage.setItem("cards", JSON.stringify(dataCards));
+  createCard(objCard);
+  clearForm();
+});
+
+function clearForm() {
+  input.value = "";
+  textInput = "";
+  inputNum.value = "";
+  numInput = "";
+  select.value = "";
+  btn.disabled = true;
+}
 
 function buttonState() {
   const isTextInputValid = textInput.trim().length > 0;
@@ -24,78 +76,73 @@ function buttonState() {
 
 function createAndAppendCard(cardData, parent, index) {
   const card = document.createElement("div");
+  const nameDisplay = document.createElement("p");
+  const numberDisplay = document.createElement("p");
+  const jobDisplay = document.createElement("p");
+  const timeDisplay = document.createElement("p");
+  const deleteButton = document.createElement("button");
+  const deleteIcon = document.createElement("img");
+  const changeButton = document.createElement("div");
+  const listBlock = [
+    nameDisplay,
+    numberDisplay,
+    jobDisplay,
+    timeDisplay,
+    deleteButton,
+    changeButton,
+  ];
+
   card.id = `${id++}`;
   card.className = "card";
 
-  const nameDisplay = document.createElement("p");
   nameDisplay.textContent = `Имя: ${cardData.name}`;
-  card.appendChild(nameDisplay);
-
-  const numberDisplay = document.createElement("p");
   numberDisplay.textContent = `Телефон: ${cardData.phone}`;
-  card.appendChild(numberDisplay);
-
-  const jobDisplay = document.createElement("p");
   jobDisplay.textContent = `Должность: ${cardData.jobPosition}`;
-  card.appendChild(jobDisplay);
-
-  const timeDisplay = document.createElement("p");
   timeDisplay.textContent = `${cardData.createDate}`;
-  card.appendChild(timeDisplay);
 
-  const deleteButton = document.createElement("button");
-  deleteButton.classList.add("delete-button");
-  const deleteIcon = document.createElement("img");
   deleteIcon.src = "./static/icons/trash.svg";
   deleteIcon.classList.add("delete-icon");
+
+  deleteButton.classList.add("delete-button");
   deleteButton.appendChild(deleteIcon);
   deleteButton.addEventListener("click", () => deleteCard(index));
-  card.appendChild(deleteButton);
 
-  const changeButton = document.createElement("div");
   changeButton.classList.add("change-button");
   changeButton.addEventListener("click", (event) => openForm(event, index));
-  card.appendChild(changeButton);
 
-  switch (cardData.jobPosition) {
-    case "Администратор":
-      card.classList.add("card-red");
-      break;
-    case "Девопс":
-      card.classList.add("card-yellow");
-      break;
-    case "Разработчик":
-      card.classList.add("card-green");
-      break;
-    case "Тестировщик":
-      card.classList.add("card-green");
-      break;
-  }
+  card.classList.add(cardData.jobPosition);
 
+  listBlock.forEach((item) => card.appendChild(item));
   parent.appendChild(card);
 }
 
 function openForm(ev, index) {
   const currentCard = ev.target.parentNode;
   const currentDataCard = dataCards[index];
+  const nameLabel = document.createElement("label");
+  const changeInputName = document.createElement("input");
+  const nameContainer = document.createElement("div");
+  const phoneLabel = document.createElement("label");
+  const changeInputNumber = document.createElement("input");
+  const phoneContainer = document.createElement("div");
+  const jobLabel = document.createElement("label");
+
   currentCard.innerHTML = "";
 
-  const nameLabel = document.createElement("label");
   nameLabel.textContent = "Имя: ";
-  const changeInputName = document.createElement("input");
-  changeInputName.type = "text";
-  changeInputName.value = currentDataCard.name;
+  phoneLabel.textContent = "Телефон: ";
+  jobLabel.textContent = "Должность: ";
 
-  const nameContainer = document.createElement("div");
+  changeInputName.type = "text";
+  changeInputNumber.type = "number";
+
+  changeInputName.value = currentDataCard.name;
+  changeInputNumber.value = currentDataCard.phone;
+
   nameContainer.appendChild(nameLabel);
   nameContainer.appendChild(changeInputName);
 
-  const phoneLabel = document.createElement("label");
-  phoneLabel.textContent = "Телефон: ";
-  const changeInputNumber = document.createElement("input");
-  changeInputNumber.type = "number";
   changeInputNumber.placeholder = "Телефон";
-  changeInputNumber.value = currentDataCard.phone;
 
   changeInputNumber.addEventListener("keydown", function (event) {
     const listParams = ["e", "-", "+", ".", ",", "ArrowUp", "ArrowDown"];
@@ -112,12 +159,9 @@ function openForm(ev, index) {
     }
   });
 
-  const phoneContainer = document.createElement("div");
   phoneContainer.appendChild(phoneLabel);
   phoneContainer.appendChild(changeInputNumber);
 
-  const jobLabel = document.createElement("label");
-  jobLabel.textContent = "Должность: ";
   const changeSelectJob = document.createElement("select");
   const options = Array.from(select.options)
     .filter((option) => option.value !== "")
@@ -129,7 +173,7 @@ function openForm(ev, index) {
     });
   options.forEach((option) => changeSelectJob.appendChild(option));
   changeSelectJob.value = currentDataCard.jobPosition;
-
+ 
   let changeName = changeInputName.value;
   let changeNumber = changeInputNumber.value;
   let changeJob = changeSelectJob.value;
@@ -157,7 +201,7 @@ function openForm(ev, index) {
   okIcon.classList.add("ok-icon");
   okButton.appendChild(okIcon);
   okButton.addEventListener("click", () => {
-    saveEditedData(currentCard, index, changeName, changeNumber, changeJob);
+    saveEditedData(index, changeName, changeNumber, changeJob);
   });
 
   const cancelButton = document.createElement("button");
@@ -170,45 +214,32 @@ function openForm(ev, index) {
     renderCards();
   });
 
-  currentCard.appendChild(nameContainer);
-  currentCard.appendChild(phoneContainer);
-  currentCard.appendChild(jobContainer);
-  currentCard.appendChild(okButton);
-  currentCard.appendChild(cancelButton);
+  const listBlocks = [
+    nameContainer,
+    phoneContainer,
+    jobContainer,
+    okButton,
+    cancelButton,
+  ];
+  listBlocks.forEach((item) => currentCard.appendChild(item));
 }
 
-function saveEditedData(card, index, name, phone, job) {
+function saveEditedData(index, name, phone, job) {
   const selectedOption = Array.from(select.options).find(
     (option) => option.value === job
   );
-
-  const originalDate = new Date().toLocaleString("ru-RU", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-
-  const [datePart, timePart] = originalDate.split(", ");
-  const [day, month, year] = datePart.split(".");
-
-  const formattedDate = `${year}-${month}-${day} ${timePart}`;
-
   const updatedCard = {
     id: dataCards[index].id,
     name: name,
     phone: phone,
-    jobPosition: selectedOption.text,
-    date: formattedDate,
+    jobPosition: selectedOption.value,
   };
-  channgeCard(updatedCard);
+  changeCard(updatedCard);
 }
 
 // localStorage.setItem("cards", JSON.stringify(dataCards));
 
-async function channgeCard(card) {
+async function changeCard(card) {
   try {
     const url = `http://localhost:8080/task/${card.id}`;
     const response = await fetch(url, {
@@ -279,52 +310,3 @@ async function createCard(card) {
     console.log(e);
   }
 }
-
-input.addEventListener("input", function (event) {
-  textInput = event.target.value;
-  buttonState();
-});
-
-inputNum.addEventListener("keydown", function (event) {
-  const listParams = ["e", "-", "+", ".", ",", "ArrowUp", "ArrowDown"];
-  listParams.forEach((item) => {
-    if (item === event.key) {
-      event.preventDefault();
-    }
-  });
-});
-
-inputNum.addEventListener("input", function (event) {
-  if (event.target.value.length > 11) {
-    event.target.value = event.target.value.slice(0, 11);
-  }
-});
-
-inputNum.addEventListener("input", function (event) {
-  numInput = event.target.value;
-  buttonState();
-});
-
-select.addEventListener("change", function () {
-  buttonState();
-});
-
-btn.addEventListener("click", function () {
-  const selectedOption = select.options[select.selectedIndex];
-
-  const objCard = {
-    name: textInput,
-    phone: numInput,
-    jobPosition: selectedOption.text,
-  };
-
-  // localStorage.setItem("cards", JSON.stringify(dataCards));
-  createCard(objCard);
-
-  input.value = "";
-  textInput = "";
-  inputNum.value = "";
-  numInput = "";
-  select.value = "";
-  btn.disabled = true;
-});
