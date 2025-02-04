@@ -79,11 +79,6 @@ function openForm(ev, index) {
   const currentCard = ev.target.parentNode;
   const currentDataCard = dataCards[index];
   currentCard.innerHTML = "";
-  currentCard.style.padding = '10px';
-  currentCard.style.boxSizing = 'border-box';
-
-  const editFormContainer = document.createElement("div");
-  editFormContainer.classList.add("edit-form-container");
 
   const nameLabel = document.createElement("label");
   nameLabel.textContent = "Имя: ";
@@ -175,13 +170,11 @@ function openForm(ev, index) {
     renderCards();
   });
 
-  editFormContainer.appendChild(nameContainer);
-  editFormContainer.appendChild(phoneContainer);
-  editFormContainer.appendChild(jobContainer);
-  editFormContainer.appendChild(okButton);
-  editFormContainer.appendChild(cancelButton);
-
-  currentCard.appendChild(editFormContainer);
+  currentCard.appendChild(nameContainer);
+  currentCard.appendChild(phoneContainer);
+  currentCard.appendChild(jobContainer);
+  currentCard.appendChild(okButton);
+  currentCard.appendChild(cancelButton);
 }
 
 function saveEditedData(card, index, name, phone, job) {
@@ -210,32 +203,42 @@ function saveEditedData(card, index, name, phone, job) {
     jobPosition: selectedOption.text,
     date: formattedDate,
   };
-  const url = `http://localhost:8080/task/${updatedCard.id}`;
-  fetch(url, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(updatedCard),
-  })
-    .then(() => getData())
-
-    .catch((e) => console.error(e));
+  channgeCard(updatedCard);
 }
 
 // localStorage.setItem("cards", JSON.stringify(dataCards));
 
-function deleteCard(index) {
-  const cardId = dataCards[index].id;
-  const url = `http://localhost:8080/task/${cardId}`;
-  fetch(url, {
-    method: "DELETE",
-  })
-    .then((response) => {
-      console.log(response);
+async function changeCard(card) {
+  try {
+    const url = `http://localhost:8080/task/${card.id}`;
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedCard),
+    });
+    if (response) {
       getData();
-    })
-    .catch((e) => console.error(e));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+async function deleteCard(index) {
+  try {
+    const cardId = dataCards[index].id;
+    const url = `http://localhost:8080/task/${cardId}`;
+    const response = await fetch(url, {
+      method: "DELETE",
+    });
+    if (response) {
+      getData();
+    }
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function renderCards() {
@@ -245,27 +248,19 @@ function renderCards() {
   });
 }
 
-function getData() {
-  fetch("http://localhost:8080/task/all", {
-    method: "GET",
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      dataCards = res;
+async function getData() {
+  try {
+    const response = await fetch("http://localhost:8080/task/all", {
+      method: "GET",
+    });
+    if (response) {
+      const data = await response.json();
+      dataCards = data;
       renderCards();
-    })
-    .catch((e) => console.log(e, "catch"));
-  // try {
-  //   const response = await fetch("http://localhost:8080/task/all", {
-  //     method: "GET",
-  //   });
-  //   if (response) {
-  //     const data = await response.json();
-  //     dataCards = data;
-  //   }
-  // } catch (e) {
-  //   console.log(e)
-  // }
+    }
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function createCard(card) {
