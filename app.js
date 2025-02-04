@@ -216,7 +216,7 @@ async function channgeCard(card) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedCard),
+      body: JSON.stringify(card),
     });
     if (response) {
       getData();
