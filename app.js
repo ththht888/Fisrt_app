@@ -128,7 +128,7 @@ function openForm(ev, index) {
       return newOption;
     });
   options.forEach((option) => changeSelectJob.appendChild(option));
-  changeSelectJob.value = currentDataCard.jobValue;
+  changeSelectJob.value = currentDataCard.jobPosition;
 
   let changeName = changeInputName.value;
   let changeNumber = changeInputNumber.value;
