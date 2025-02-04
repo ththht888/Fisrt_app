@@ -208,7 +208,7 @@ function saveEditedData(card, index, name, phone, job) {
 
 // localStorage.setItem("cards", JSON.stringify(dataCards));
 
-async function changeCard(card) {
+async function channgeCard(card) {
   try {
     const url = `http://localhost:8080/task/${card.id}`;
     const response = await fetch(url, {
