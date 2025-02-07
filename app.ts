@@ -1,35 +1,36 @@
-interface Card {
-  id: number;
+const blockButton = document.getElementById(
+  "btn-change-text"
+) as HTMLButtonElement;
+const blockCards = document.getElementById("main") as HTMLElement;
+const blockName = document.getElementById("input-text") as HTMLInputElement;
+const blockJob = document.getElementById("select") as HTMLSelectElement;
+const blockPhone = document.getElementById("input-number") as HTMLInputElement;
+
+interface ICard {
+  id?: number;
   name: string;
   phone: string;
   jobPosition: string;
   createDate?: string;
 }
 
-const div = document.getElementById("cart") as HTMLElement;
-const btn = document.getElementById("btn-change-text") as HTMLButtonElement;
-const parentDiv = document.getElementById("main") as HTMLElement;
-const input = document.getElementById("input-text") as HTMLInputElement;
-const select = document.getElementById("select") as HTMLSelectElement;
-const inputNum = document.getElementById("input-number") as HTMLInputElement;
-
-let textInput: string = "";
-let numInput: string = "";
+let textName: string = "";
+let textPhone: string = "";
 let idCounter: number = 0;
-let dataCards: Card[] = [];
+let dataCard: ICard[] = [];
 
-btn.disabled = true;
+blockButton.disabled = true;
 
-getData();
+getDataCard();
 
-input?.addEventListener("input", (event: Event) => {
+blockName.addEventListener("input", (event: Event) => {
   const target = event.target as HTMLInputElement;
-  textInput = target.value;
-  buttonState();
+  textName = target.value;
+  btnSetState();
 });
 
-inputNum?.addEventListener("keydown", (event: KeyboardEvent) => {
-  const listParams: readonly string[] = [
+blockPhone.addEventListener("keydown", (event: KeyboardEvent) => {
+  const listParams: any = [
     "e",
     "-",
     "+",
@@ -43,58 +44,56 @@ inputNum?.addEventListener("keydown", (event: KeyboardEvent) => {
   }
 });
 
-inputNum?.addEventListener("input", (event: Event) => {
+blockPhone.addEventListener("input", (event: Event) => {
   const target = event.target as HTMLInputElement;
   if (target.value.length > 11) {
     target.value = target.value.slice(0, 11);
   }
 });
 
-inputNum?.addEventListener("input", (event: Event) => {
+blockPhone.addEventListener("input", (event: Event) => {
   const target = event.target as HTMLInputElement;
-  numInput = target.value;
-  buttonState();
+  textPhone = target.value;
+  btnSetState();
 });
 
-select?.addEventListener("change", () => {
-  buttonState();
+blockJob.addEventListener("change", () => {
+  btnSetState();
 });
 
-btn?.addEventListener("click", () => {
-  const selectedOption = select.options[select.selectedIndex];
-  if (!selectedOption) return;
-
-  const objCard: Omit<Card, "id" | "createDate"> = {
-    name: textInput,
-    phone: numInput,
+blockButton.addEventListener("click", () => {
+  const selectedOption = blockJob.options[blockJob.selectedIndex];
+  const objCard: ICard = {
+    name: textName,
+    phone: textPhone,
     jobPosition: selectedOption.value,
   };
 
-  createCard(objCard);
-  clearForm();
+  createdCard(objCard);
+  clearFormCard();
 });
 
-function clearForm(): void {
-  input.value = "";
-  textInput = "";
-  inputNum.value = "";
-  numInput = "";
-  select.value = "";
-  btn.disabled = true;
+function clearFormCard(): void {
+  blockName.value = "";
+  textName = "";
+  blockPhone.value = "";
+  textPhone = "";
+  blockJob.value = "";
+  blockButton.disabled = true;
 }
 
-function buttonState(): void {
-  const isTextInputValid: boolean = textInput.trim().length > 0;
-  const isNumInputValid: boolean = numInput.length === 11;
-  const isSelectValid: boolean = select.value !== "";
-  btn.disabled = !(isTextInputValid && isNumInputValid && isSelectValid);
+function btnSetState(): void {
+  const isTextInputValid: boolean = textName.trim().length > 0;
+  const isNumInputValid: boolean = textPhone.length === 11;
+  const isSelectValid: boolean = blockJob.value !== "";
+  blockButton.disabled = !(
+    isTextInputValid &&
+    isNumInputValid &&
+    isSelectValid
+  );
 }
 
-function createAndAppendCard(
-  cardData: Card,
-  parent: HTMLElement,
-  index: number
-): void {
+function addCard(cardData: ICard, parent: HTMLElement, index: number): void {
   const card = document.createElement("div");
   const nameDisplay = document.createElement("p");
   const numberDisplay = document.createElement("p");
@@ -117,10 +116,10 @@ function createAndAppendCard(
 
   deleteButton.classList.add("delete-button");
   deleteButton.appendChild(deleteIcon);
-  deleteButton.addEventListener("click", () => deleteCard(index));
+  deleteButton.addEventListener("click", () => deletedCard(index));
 
   changeButton.classList.add("change-button");
-  changeButton.addEventListener("click", (event) => openForm(event, index));
+  changeButton.addEventListener("click", (event) => openFormCard(event, index));
 
   card.classList.add(cardData.jobPosition);
 
@@ -137,10 +136,10 @@ function createAndAppendCard(
   parent.appendChild(card);
 }
 
-function openForm(ev: Event, index: number): void {
+function openFormCard(ev: Event, index: number): void {
   const target = ev.target as HTMLElement;
   const currentCard = target.parentNode as HTMLElement;
-  const currentDataCard = dataCards[index];
+  const currentDataCard = dataCard[index];
 
   currentCard.innerHTML = "";
 
@@ -164,7 +163,7 @@ function openForm(ev: Event, index: number): void {
   phoneContainer.appendChild(changeInputNumber);
 
   changeInputNumber.addEventListener("keydown", (event: KeyboardEvent) => {
-    const listParams: string[] = [
+    const listParams: any = [
       "e",
       "-",
       "+",
@@ -187,7 +186,7 @@ function openForm(ev: Event, index: number): void {
   const jobLabel = document.createElement("label");
   jobLabel.textContent = "Должность: ";
   const changeSelectJob = document.createElement("select");
-  const options = Array.from(select.options)
+  const options:any = Array.from(blockJob.options)
     .filter((option) => option.value !== "")
     .map((option) => {
       const newOption = document.createElement("option");
@@ -228,7 +227,7 @@ function openForm(ev: Event, index: number): void {
   okIcon.classList.add("ok-icon");
   okButton.appendChild(okIcon);
   okButton.addEventListener("click", () => {
-    saveEditedData(index, changeName, changeNumber, changeJob);
+    saveEditedCard(index, changeName, changeNumber, changeJob);
   });
 
   const cancelButton = document.createElement("button");
@@ -238,7 +237,7 @@ function openForm(ev: Event, index: number): void {
   cancelIcon.classList.add("cancel-icon");
   cancelButton.appendChild(cancelIcon);
   cancelButton.addEventListener("click", () => {
-    renderCards();
+    renderedCards();
   });
 
   [nameContainer, phoneContainer, jobContainer, okButton, cancelButton].forEach(
@@ -248,28 +247,28 @@ function openForm(ev: Event, index: number): void {
   );
 }
 
-function saveEditedData(
+function saveEditedCard(
   index: number,
   name: string,
   phone: string,
   job: string
 ): void {
-  const selectedOption = Array.from(select.options).find(
+  const selectedOption:any = Array.from(blockJob.options).find(
     (option) => option.value === job
   );
   if (!selectedOption) return;
 
-  const updatedCard: Card = {
-    id: dataCards[index].id,
+  const updatedCard: ICard = {
+    id: dataCard[index].id,
     name: name,
     phone: phone,
     jobPosition: selectedOption.value,
   };
 
-  changeCard(updatedCard);
+  changedCard(updatedCard);
 }
 
-async function changeCard(card: Card): Promise<void> {
+async function changedCard(card: ICard): Promise<void> {
   try {
     const url = `http://localhost:8080/task/${card.id}`;
     const response = await fetch(url, {
@@ -280,53 +279,51 @@ async function changeCard(card: Card): Promise<void> {
       body: JSON.stringify(card),
     });
     if (response.ok) {
-      getData();
+      getDataCard();
     }
   } catch (error) {
     console.error("Error updating card:", error);
   }
 }
 
-async function deleteCard(index: number): Promise<void> {
+async function deletedCard(index: number): Promise<void> {
   try {
-    const cardId = dataCards[index].id;
+    const cardId = dataCard[index].id;
     const url = `http://localhost:8080/task/${cardId}`;
     const response = await fetch(url, {
       method: "DELETE",
     });
     if (response.ok) {
-      getData();
+      getDataCard();
     }
   } catch (error) {
     console.error("Error deleting card:", error);
   }
 }
 
-function renderCards(): void {
-  parentDiv.innerHTML = "";
-  dataCards.forEach((cardData, index) => {
-    createAndAppendCard(cardData, parentDiv, index);
+function renderedCards(): void {
+  blockCards.innerHTML = "";
+  dataCard.forEach((cardData, index) => {
+    addCard(cardData, blockCards, index);
   });
 }
 
-async function getData(): Promise<void> {
+async function getDataCard(): Promise<void> {
   try {
     const response = await fetch("http://localhost:8080/task/all", {
       method: "GET",
     });
     if (response.ok) {
       const data = await response.json();
-      dataCards = data;
-      renderCards();
+      dataCard = data;
+      renderedCards();
     }
   } catch (error) {
     console.error("Error fetching card data:", error);
   }
 }
 
-async function createCard(
-  card: Omit<Card, "id" | "createDate">
-): Promise<void> {
+async function createdCard(card: ICard): Promise<void> {
   try {
     const response = await fetch("http://localhost:8080/task", {
       method: "POST",
@@ -336,7 +333,7 @@ async function createCard(
       body: JSON.stringify(card),
     });
     if (response.ok) {
-      getData();
+      getDataCard();
     }
   } catch (error) {
     console.error("Error creating card:", error);
